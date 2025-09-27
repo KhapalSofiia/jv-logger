@@ -18,7 +18,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (!user.getPassword().equals(password)) {
             AuthenticationException ex = new AuthenticationException(
                     "Username or password are incorrect for login: " + login);
-            logger.log(Level.SEVERE, "Authentication failed for login={0}", new Object[]{login, ex});
+            logger.log(Level.SEVERE, "Authentication failed for " +
+                    "login={0}", new Object[]{login, ex});
             throw ex;
         }
         return user;
