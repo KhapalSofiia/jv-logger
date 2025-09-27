@@ -2,18 +2,24 @@ package mate.academy.service;
 
 import mate.academy.exception.AuthenticationException;
 import mate.academy.model.User;
+
+import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private static final Logger logger = LogManager.getLogManager().getLogger(AuthenticationServiceImpl.class.getName());
+    private static final Logger logger = LogManager.getLogManager()
+            .getLogger(AuthenticationServiceImpl.class.getName());
 
     @Override
     public User login(String login, String password) throws AuthenticationException {
-        logger.info("Method login was called for login: " + login);
+        logger.log(Level.INFO, "Method login was called. Params: login={0}", new Object[]{login});
         User user = findByLogin(login);
         if (!user.getPassword().equals(password)) {
-            logger.severe("Username or password are incorrect for login: " + login);
+            AuthenticationException ex = new AuthenticationException(
+                    "Username or password are incorrect for login: " + login);
+            logger.log(Level.SEVERE, "Authentication failed for login=" + login, ex);
+            throw ex;
         }
         return user;
     }
